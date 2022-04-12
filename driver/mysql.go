@@ -2,6 +2,7 @@ package driver
 
 import (
 	"event-planner/configs"
+	"event-planner/entity"
 	"fmt"
 	"github.com/labstack/gommon/log"
 	"gorm.io/driver/mysql"
@@ -29,7 +30,10 @@ func InitDB(configs *configs.AppConfig) *gorm.DB {
 }
 
 func InitialMigration(db *gorm.DB) {
-	err := db.AutoMigrate()
+	err := db.AutoMigrate(&entity.Comment{})
+	err = db.AutoMigrate(&entity.JoinEvent{})
+	err = db.AutoMigrate(&entity.Event{})
+	err = db.AutoMigrate(&entity.User{})
 
 	if err != nil {
 		log.Info("error auto migrate", err)
