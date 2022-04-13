@@ -15,6 +15,10 @@ import (
 	authhandler "event-planner/delivery/handler/auth"
 	authrepo "event-planner/repository/auth"
 	authusecase "event-planner/service/auth"
+
+	eventhandler "event-planner/delivery/handler/event"
+	eventrepository "event-planner/repository/event"
+	eventusecase "event-planner/service/event"
 )
 
 func main() {
@@ -29,9 +33,13 @@ func main() {
 	authUseCase := authusecase.NewAuthUseCase(authRepo)
 	authHandler := authhandler.NewAuthHandler(authUseCase)
 
+	eventRepo := eventrepository.NewEventRepository(db)
+	eventUseCase := eventusecase.NewEventUseCase(eventRepo)
+	eventHandler := eventhandler.NewEventHandler(eventUseCase)
+
 	e := echo.New()
-	
+
 	router.RegisterAuthPath(e, authHandler)
-	router.RegisterPath(e, userHandler)
+	router.RegisterPath(e, userHandler, eventHandler)
 	log.Fatal(e.Start(fmt.Sprintf(":%v", configs.Port)))
 }
