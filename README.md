@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/ALTA-BE7-HAFIDH-IRSYAD-K/event-planner">
-    <img src="https://github.com/ALTA-BE7-HAFIDH-IRSYAD-K/event-planner/blob/dev/bg-go.png" alt="Logo" height="80">
+    <img src="https://github.com/ALTA-BE7-HAFIDH-IRSYAD-K/event-planner/blob/main/bg-go.png" alt="Logo" height="80">
   </a>
 
 <h3 align="center">EVENT PLANNING</h3>
@@ -124,8 +124,6 @@ Contributions are what make the open source community such an amazing place to b
 - Hafidh Irsyad K - [@hafidhIrsyad](https://www.linkedin.com/in/hafidhirsyad/)
 
 - Abbi Yudha - [@abbiyudha](https://www.linkedin.com/in/abbi-yudha-370397165/)
- 
-- Project Link: [https://github.com/ALTA-BE7-HAFIDH-IRSYAD-K/event-planner](Here)
 
 
 ---
