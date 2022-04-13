@@ -11,6 +11,10 @@ import (
 	userhandler "event-planner/delivery/handler/user"
 	userrepo "event-planner/repository/user"
 	userusecase "event-planner/service/user"
+
+	authhandler "event-planner/delivery/handler/auth"
+	authrepo "event-planner/repository/auth"
+	authusecase "event-planner/service/auth"
 )
 
 func main() {
@@ -21,8 +25,13 @@ func main() {
 	userUseCase := userusecase.NewUserUseCase(userRepo)
 	userHandler := userhandler.NewUserHandler(userUseCase)
 
-	e := echo.New()
+	authRepo := authrepo.NewAuthRepository(db)
+	authUseCase := authusecase.NewAuthUseCase(authRepo)
+	authHandler := authhandler.NewAuthHandler(authUseCase)
 
+	e := echo.New()
+	
+	router.RegisterAuthPath(e, authHandler)
 	router.RegisterPath(e, userHandler)
 	log.Fatal(e.Start(fmt.Sprintf(":%v", configs.Port)))
 }
