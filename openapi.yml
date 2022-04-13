@@ -1,3 +1,1032 @@
-  openapi:
-    paths:
-  info:
+openapi: "3.0.2"
+info:
+  title: Event Planning
+  description: Group Project 2
+  version: "1.0.0"
+servers:
+  - description: event-planning-api
+    url: localhost:8081
+    variables:
+      environment:
+        default: dev
+        enum:
+          - "prod"
+          - "dev"
+tags:
+  - name: Auth
+  - name: Users
+  - name: Events
+  - name: Participants
+paths:
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: login user
+      description: Login user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestLogin"
+            examples:
+              userData1:
+                description: "Example data user"
+                value: { identifier: "admin@admin.com", password: "admin" }
+              userData2:
+                description: "Example data user"
+                value: { identifier: "admin123", password: "admin123" }
+      responses:
+        "200":
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response success 1
+                  value:
+                    {
+                      data:
+                        {
+                          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                        },
+                      status: "success",
+                      message: "login successfully",
+                    }
+                responseData2:
+                  description: response success 2
+                  value:
+                    {
+                      data:
+                        {
+                          token: "AyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                        },
+                      status: "success",
+                      message: "login luccessfully",
+                    }
+
+        "400":
+          description: Success Response
+          content:
+            application/json:
+              examples:
+                responseData1:
+                  description: response failed 1
+                  value:
+                    { code: 400, status: "failed", message: "user not found" }
+                responseData2:
+                  description: response failed 2
+                  value:
+                    {
+                      code: 400,
+                      status: "failed",
+                      message: "password incorrect",
+                    }
+  /users:
+    post:
+      tags:
+        - Users
+      summary: register
+      description: Register User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestUserData"
+            examples:
+              userData1:
+                description: "Example data user"
+                value:
+                  {
+                    ID: 1,
+                    username: "admin",
+                    email: "admin@mail.com",
+                    password: "admin",
+                    address: "Surabaya",
+                    phone: "012345678",
+                    image: "image",
+                  }
+              userData2:
+                description: "Example data user"
+                value:
+                  {
+                    ID: 2,
+                    username: "admin 2",
+                    email: "admin2@alterra.id",
+                    password: "admin",
+                    address: "Pekanbaru",
+                    phone: "012345678",
+                    image: "image",
+                  }
+      responses:
+        "200":
+          $ref: "#/components/responses/registerUserSuccess"
+        "400":
+          $ref: "#/components/responses/registerUserFailed"
+    get:
+      tags:
+        - Users
+      summary: get user profile
+      description: Get User by Token
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/getUserProfileSuccess"
+        "400":
+          $ref: "#/components/responses/getUserProfileFailed"
+    put:
+      tags:
+        - Users
+      summary: edit user profile
+      description: Edit User Profile by Token
+      security:
+        - JWTAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: admin
+                email:
+                  type: string
+                  example: admin@mail.com
+                password:
+                  type: string
+                  example: adminbaru
+                address:
+                  type: string
+                  example: kubangan
+                phone:
+                  type: string
+                  example: "0123456789"
+                image:
+                  type: string
+                  example: image
+      responses:
+        "200":
+          $ref: "#/components/responses/editUserProfileSuccess"
+        "400":
+          $ref: "#/components/responses/editUserProfileFailed"
+    delete:
+      tags:
+        - Users
+      summary: delete user
+      description: Delete User by Token
+      security:
+        - JWTAuth: []
+      responses:
+        "200":
+          $ref: "#/components/responses/responseSuccess"
+        "400":
+          $ref: "#/components/responses/responseFailed"
+  /events:
+    post:
+      tags:
+        - Events
+      summary: create event
+      description: Create User Event
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestUserData"
+            examples:
+              eventData:
+                description: "Example data event"
+                value:
+                  {
+                    name: "sepatu tua",
+                    date: "2022-04-07T21:08:54.73+07:00",
+                    location: "Jakarta",
+                    status: "images",
+                    category: "available",
+                    image: "image",
+                  }
+      responses:
+        "200":
+          $ref: "#/components/responses/createEventsuccess"
+        "400":
+          $ref: "#/components/responses/createEventFailed"
+    get:
+      tags:
+        - Events
+      summary: get all events
+      description: Get All Events
+      responses:
+        "200":
+          $ref: "#/components/responses/getAllEventsuccess"
+        "400":
+          $ref: "#/components/responses/getEventFailed"
+  /events/{id}:
+    get:
+      tags:
+        - Events
+      summary: get event by id
+      description: Get Event
+      parameters:
+        - name: id
+          description: id event
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/getEventsuccess"
+        "400":
+          $ref: "#/components/responses/getEventFailed"
+    put:
+      tags:
+        - Events
+      summary: edit event
+      description: Edit Event by Id
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id event
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestUserData"
+            examples:
+              eventData:
+                description: "Example data event"
+                value:
+                  {
+                    name: "sepatu tua",
+                    date: "2022-04-07T21:08:54.73+07:00",
+                    location: "Jakarta",
+                    status: "images",
+                    category: "available",
+                    image: "image",
+                  }
+      responses:
+        "200":
+          $ref: "#/components/responses/editEventsuccess"
+        "400":
+          $ref: "#/components/responses/editEventFailed"
+    delete:
+      tags:
+        - Events
+      summary: delete event
+      description: delete event
+      security:
+        - JWTAuth: []
+      parameters:
+        - name: id
+          description: id event
+          in: path
+          schema:
+            type: integer
+            example: 1
+          required: true
+      responses:
+        "200":
+          $ref: "#/components/responses/responsedeleteSuccess"
+        "400":
+          $ref: "#/components/responses/responsedeleteFailed"
+  /events/participantions:
+    post:
+      tags: 
+        - Participants
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestUserData"
+            examples:
+              eventData:
+                description: "Example data event"
+                value:
+                  {
+                    user_id: 1,
+                    event_id: 2
+                  }
+      responses:
+        "200":
+          $ref: "#/components/responses/createParticipantSuccess"
+        "400":
+          $ref: "#/components/responses/createParticipantFailed"
+    get:
+      tags:
+        - Participants
+      responses:
+        "200":
+          $ref: "#/components/responses/getAllParticipantSuccess"
+        "400":
+          $ref: "#/components/responses/getAllParticipantFailed"
+  /events/comment:
+    post:
+      tags: 
+        - Participants
+      security:
+        - JWTAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestUserData"
+            examples:
+              eventData:
+                description: "Example data event"
+                value:
+                  {
+                    user_id: 1,
+                    event_id: 2,
+                    comment: "comment"
+                  }
+      responses:
+        "200":
+          $ref: "#/components/responses/createParticipantCommentSuccess"
+        "400":
+          $ref: "#/components/responses/createParticipantCommentFailed"
+    get:
+      tags:
+        - Participants
+      responses:
+        "200":
+          $ref: "#/components/responses/getAllParticipantCommentSuccess"
+        "400":
+          $ref: "#/components/responses/getAllParticipantCommentFailed"
+#==================================#
+#    COMPONENT
+#==================================#
+components:
+  #==================================#
+  #    JWT
+  #==================================#
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  #==================================#
+  #    SCHEMAS
+  #==================================#  
+  schemas:
+    requestLogin:
+      type: object
+      properties:
+        "identifier":
+          type: string
+          example: admin
+        "password":
+          type: string
+          example: admin
+    requestUserData:
+      type: object
+      properties:
+        "username":
+          type: string
+          example: admin
+        "email":
+          type: string
+          example: admin@mail.com
+        "password":
+          type: string
+          example: admin
+        "address":
+          type: string
+          example: jl. sukamaju
+        "phone":
+          type: string
+          example: "082333444555"
+        "avatar":
+          type: string
+          example: ava
+    requestEventData:
+      type: object
+      properties:
+        "name":
+          type: string
+          example: sepatu tua
+        "date":
+          type: string
+          example: sepatu ini bisa bikin tua
+        "location":
+          type: string
+          example: location
+        "status":
+          type: string
+          example: status
+        "image":
+          type: string
+          example: image
+        "category":
+          type: string
+          example: category
+    #==================================#
+    #    RESPONSE USER
+    #==================================#
+  responses:
+    responseSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success delete user
+    responseFailed:
+      description: Failed Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed delete user
+    registerUserSuccess:
+      description: success to register
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  username:
+                    type: string
+                    example: sepatu
+                  email:
+                    type: string
+                    example: sepatu@mail.com
+                  address:
+                    type: string
+                    example: Surabaya
+                  phone:
+                    type: string
+                    example: "082333444555"
+                  avatar:
+                    type: string
+                    example: ava
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: register successfully
+    registerUserFailed:
+      description: failed to register
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: register failed
+    getUserProfileSuccess:
+      description: success get user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data_user:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  username:
+                    type: string
+                    example: sepatu
+                  email:
+                    type: string
+                    example: sepatu@mail.com
+                  address:
+                    type: string
+                    example: Surabaya
+                  phone:
+                    type: string
+                    example: 082333444555
+                  avatar:
+                    type: string
+                    example: ava
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success get user profile
+    getUserProfileFailed:
+      description: fail to get user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed get user profile
+    editUserProfileSuccess:
+      description: success edit user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  username:
+                    type: string
+                    example: bujang
+                  email:
+                    type: string
+                    example: bujang@mail.com
+                  address:
+                    type: string
+                    example: ini alamat baru
+                  phone:
+                    type: string
+                    example: "082333444777"
+                  avatar:
+                    type: string
+                    example: avatar
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success edit user profile
+    editUserProfileFailed:
+      description: fail to edit user profile
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed edit user profile
+    #==================================#
+    #    RESPONSE EVENT
+    #==================================#
+    editEventsuccess:
+      description: success edit event
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  name:
+                    type: string
+                    example: name
+                  date:
+                    type: string
+                    example: 2022-04-07T21:08:54.73+07:00
+                  location:
+                    type: string
+                    example: location
+                  status:
+                    type: string
+                    example: "images"
+                  category:
+                    type: string
+                    example: category
+                  image:
+                    type: string
+                    example: image
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success edit event
+    editEventFailed:
+      description: failed edit event
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed edit event
+    createEventsuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  name:
+                    type: string
+                    example: event name
+                  date:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  location:
+                    type: string
+                    example: jakarta
+                  image:
+                    type: string
+                    example: images
+                  status:
+                    type: string
+                    example: available
+                  category:
+                    type: string
+                    example: hello
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success create event
+    createEventFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed create event
+    responsedeleteSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success delete event
+    responsedeleteFailed:
+      description: Failed Operation
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: failed delete event
+    getEventsuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  ID:
+                    type: integer
+                    example: 1
+                  CreatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  UpdatedAt:
+                    type: string
+                    example: "2022-04-07T21:08:54.73+07:00"
+                  name:
+                    type: string
+                    example: name
+                  date:
+                    type: string
+                    example: 2022-04-07T21:08:54.73+07:00
+                  location:
+                    type: string
+                    example: location
+                  status:
+                    type: string
+                    example: "images"
+                  category:
+                    type: string
+                    example: category
+                  image:
+                    type: string
+                    example: image
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success get event
+    getAllEventsuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ID:
+                      type: integer
+                      example: 1
+                    CreatedAt:
+                      type: string
+                      example: "2022-04-07T21:08:54.73+07:00"
+                    UpdatedAt:
+                      type: string
+                      example: "2022-04-07T21:08:54.73+07:00"
+                    name:
+                      type: string
+                      example: name
+                    date:
+                      type: string
+                      example: 2022-04-07T21:08:54.73+07:00
+                    location:
+                      type: string
+                      example: location
+                    status:
+                      type: string
+                      example: "images"
+                    category:
+                      type: string
+                      example: category
+                    image:
+                      type: string
+                      example: image
+              status:
+                type: string
+                example: success
+              message:
+                type: string
+                example: success get all event
+    getEventFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: failed
+              message:
+                type: string
+                example: event not exist
+    #==================================#
+    #    RESPONSE PARTICIPATION
+    #==================================#
+    createParticipantSuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: success create partcipant
+    createParticipantFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: failed create event
+    createParticipantCommentSuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: success create comment
+    createParticipantCommentFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: failed create comment
+    getAllParticipantSuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ID:
+                      type: integer
+                      example: 1
+                    user_id:
+                      type: integer
+                      example: 2
+                    event_id:
+                      type: integer
+                      example: 2
+                    CreatedAt:
+                      type: string
+                      example: "2022-04-07T21:08:54.73+07:00"
+                    UpdatedAt:
+                      type: string
+                      example: "2022-04-07T21:08:54.73+07:00"
+                    name:
+                      type: string
+                      example: name
+                    date:
+                      type: string
+                      example: 2022-04-07T21:08:54.73+07:00
+                    location:
+                      type: string
+                      example: location
+                    status:
+                      type: string
+                      example: "images"
+                    category:
+                      type: string
+                      example: category
+                    image:
+                      type: string
+                      example: image
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: success get all participations
+    getAllParticipantFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: participations not exist
+    getAllParticipantCommentSuccess:
+      description: Operation Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ID:
+                      type: integer
+                      example: 1
+                    user_id:
+                      type: integer
+                      example: 2
+                    event_id:
+                      type: integer
+                      example: 2
+                    comment:
+                      type: string
+                      example: comment
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: success get all participations comments
+    getAllParticipantCommentFailed:
+      description: Operation Failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: participations comment not exist
