@@ -1,10 +1,15 @@
 package router
 
 import (
+	"event-planner/delivery/handler/auth"
 	"event-planner/delivery/handler/user"
 	"event-planner/delivery/middleware"
 	"github.com/labstack/echo/v4"
 )
+
+func RegisterAuthPath(e *echo.Echo, ah *auth.AuthHandler) {
+	e.POST("/auth", ah.LoginHandler())
+}
 
 func RegisterPath(e *echo.Echo, uh *user.UserHandler) {
 
