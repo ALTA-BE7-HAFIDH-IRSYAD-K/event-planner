@@ -6,6 +6,6 @@ COPY . .
 
 RUN go build -o event-planner
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ./event-planner
