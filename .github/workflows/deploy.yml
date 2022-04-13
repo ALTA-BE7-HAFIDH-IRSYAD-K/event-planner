@@ -23,4 +23,4 @@ jobs:
             docker stop event-planner
             docker rm event-planner
             docker build -t eventplanner:latest .
-            docker run -d -p 8080:8080 -e APP_PORT="8080" -e DB_PORT="3306" -e DB_DRIVER="mysql" -e DB_NAME="eventplanningdb" -e DB_ADDRESS="${{ secrets.DBHOST }}" -e DB_USERNAME="${{ secrets.DBUSERNAME }}" -e DB_PASSWORD="${{ secrets.DBPASSWORD }}" --name event-planner eventplanner:latest
+            docker run -d -p 80:80 -e APP_PORT="80" -e DB_PORT="3306" -e DB_DRIVER="mysql" -e DB_NAME="eventplanningdb" -e DB_ADDRESS="${{ secrets.DBHOST }}" -e DB_USERNAME="${{ secrets.DBUSERNAME }}" -e DB_PASSWORD="${{ secrets.DBPASSWORD }}" --name event-planner eventplanner:latest
