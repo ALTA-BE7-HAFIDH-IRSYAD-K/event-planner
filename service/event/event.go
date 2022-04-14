@@ -3,6 +3,8 @@ package event
 import (
 	"event-planner/entity"
 	"event-planner/repository/event"
+	"event-planner/utils"
+	"mime/multipart"
 )
 
 type EventUseCase struct {
@@ -31,8 +33,16 @@ func (euc *EventUseCase) GetEventByIdUser(id int) ([]entity.Event, error) {
 	return Products, err
 }
 
-func (euc *EventUseCase) CreateEvent(Product entity.Event) error {
-	err := euc.EventRepository.CreateEvent(Product)
+func (euc *EventUseCase) CreateEvent(file *multipart.FileHeader, event entity.Event) error {
+
+	url, err := utils.UploadFile(file, event.Images)
+
+	if err != nil {
+		return err
+	}
+
+	event.Images = url
+	err = euc.EventRepository.CreateEvent(event)
 	return err
 }
 

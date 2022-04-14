@@ -61,22 +61,34 @@ func (eh *EventHandler) CreateEvent() echo.HandlerFunc {
 		var events EventRequest
 		c.Bind(&events)
 
+		file, _ := c.FormFile("images")
 		id := middleware.ExtractToken(c)
+		now := time.Now()
+		year := now.Year()
+		month := now.Month()
+		day := now.Day()
+		hour := now.Hour()
+		minute := now.Minute()
+		second := now.Second()
+
+		fileName := fmt.Sprint(id, ".", year, month, day, hour, minute, second)
+		fmt.Println(fileName)
+		file.Filename = fileName + ".png"
 
 		date, err := time.Parse("2006-01-02", events.Date)
-		fmt.Println(err)
+
 		var eventData = entity.Event{
 
 			Name:        events.Name,
 			Date:        date,
 			Location:    events.Location,
-			Images:      events.Images,
+			Images:      fileName,
 			Description: events.Description,
 			Category:    events.Category,
 			UserID:      id,
 		}
 		fmt.Println(events)
-		err = eh.eventUseCase.CreateEvent(eventData)
+		err = eh.eventUseCase.CreateEvent(file, eventData)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to create product"))
 		}
