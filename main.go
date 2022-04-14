@@ -2,15 +2,16 @@ package main
 
 import (
 	_configs "event-planner/configs"
+	_participantHandler "event-planner/delivery/handler/participant"
 	_middleware "event-planner/delivery/middleware"
 	"event-planner/delivery/router"
 	"event-planner/driver"
+	_participantRepo "event-planner/repository/participant"
+	_participantService "event-planner/service/participant"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/labstack/echo/v4"
 	_echoMiddleware "github.com/labstack/echo/v4/middleware"
+	"log"
 
 	userhandler "event-planner/delivery/handler/user"
 	userrepo "event-planner/repository/user"
@@ -41,17 +42,21 @@ func main() {
 	eventUseCase := eventusecase.NewEventUseCase(eventRepo)
 	eventHandler := eventhandler.NewEventHandler(eventUseCase)
 
+	participantRepo := _participantRepo.NewParticipationRepository(db)
+	participantService := _participantService.NewParticipatService(participantRepo)
+	participantHandler := _participantHandler.NewParticipantHandler(participantService)
+
 	e := echo.New()
 
 	e.Use(_echoMiddleware.RemoveTrailingSlash())
 	e.Use(_middleware.CustomLogger())
 	e.Use(_echoMiddleware.CORSWithConfig(_echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
-		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+		AllowHeaders: []string{"*"},
+		AllowMethods: []string{"*"},
 	}))
 
 	router.RegisterAuthPath(e, authHandler)
-	router.RegisterPath(e, userHandler, eventHandler)
+	router.RegisterPath(e, userHandler, eventHandler, participantHandler)
 	log.Fatal(e.Start(fmt.Sprintf(":%v", configs.Port)))
 }
