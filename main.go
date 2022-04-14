@@ -12,6 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 	_echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"log"
+	"net/http"
 
 	userhandler "event-planner/delivery/handler/user"
 	userrepo "event-planner/repository/user"
@@ -52,8 +53,7 @@ func main() {
 	e.Use(_middleware.CustomLogger())
 	e.Use(_echoMiddleware.CORSWithConfig(_echoMiddleware.CORSConfig{
 		AllowOrigins: []string{"*"},
-		AllowHeaders: []string{"*"},
-		AllowMethods: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
 	}))
 
 	router.RegisterAuthPath(e, authHandler)
