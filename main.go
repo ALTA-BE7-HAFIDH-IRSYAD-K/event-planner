@@ -2,11 +2,15 @@ package main
 
 import (
 	_configs "event-planner/configs"
+	_middleware "event-planner/delivery/middleware"
 	"event-planner/delivery/router"
 	"event-planner/driver"
 	"fmt"
-	"github.com/labstack/echo/v4"
 	"log"
+	"net/http"
+
+	"github.com/labstack/echo/v4"
+	_echoMiddleware "github.com/labstack/echo/v4/middleware"
 
 	userhandler "event-planner/delivery/handler/user"
 	userrepo "event-planner/repository/user"
@@ -38,6 +42,14 @@ func main() {
 	eventHandler := eventhandler.NewEventHandler(eventUseCase)
 
 	e := echo.New()
+
+	e.Use(_echoMiddleware.RemoveTrailingSlash())
+	e.Use(_middleware.CustomLogger())
+	e.Use(_echoMiddleware.CORSWithConfig(_echoMiddleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+	}))
 
 	router.RegisterAuthPath(e, authHandler)
 	router.RegisterPath(e, userHandler, eventHandler)

@@ -2,10 +2,10 @@ openapi: "3.0.2"
 info:
   title: Event Planning
   description: Group Project 2
-  version: "1.0.0"
+  version: "1.0.1"
 servers:
   - description: event-planning-api
-    url: localhost:8081
+    url: https://altaproject.space
     variables:
       environment:
         default: dev
@@ -100,24 +100,24 @@ paths:
                 value:
                   {
                     ID: 1,
-                    username: "admin",
+                    name: "admin",
                     email: "admin@mail.com",
                     password: "admin",
                     address: "Surabaya",
-                    phone: "012345678",
-                    image: "image",
+                    phoneNumber: "012345678",
+                    images: "image",
                   }
               userData2:
                 description: "Example data user"
                 value:
                   {
                     ID: 2,
-                    username: "admin 2",
+                    name: "admin 2",
                     email: "admin2@alterra.id",
                     password: "admin",
                     address: "Pekanbaru",
-                    phone: "012345678",
-                    image: "image",
+                    phoneNumber: "012345678",
+                    images: "image",
                   }
       responses:
         "200":
@@ -149,7 +149,7 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                name:
                   type: string
                   example: admin
                 email:
@@ -161,7 +161,7 @@ paths:
                 address:
                   type: string
                   example: kubangan
-                phone:
+                phoneNumber:
                   type: string
                   example: "0123456789"
                 image:
@@ -206,9 +206,9 @@ paths:
                     name: "sepatu tua",
                     date: "2022-04-07T21:08:54.73+07:00",
                     location: "Jakarta",
-                    status: "images",
-                    category: "available",
                     image: "image",
+                    description: "description",
+                    category: "available",
                   }
       responses:
         "200":
@@ -273,9 +273,9 @@ paths:
                     name: "sepatu tua",
                     date: "2022-04-07T21:08:54.73+07:00",
                     location: "Jakarta",
-                    status: "images",
-                    category: "available",
                     image: "image",
+                    description: "description",
+                    category: "available",
                   }
       responses:
         "200":
@@ -319,7 +319,6 @@ paths:
                 description: "Example data event"
                 value:
                   {
-                    user_id: 1,
                     event_id: 2
                   }
       responses:
@@ -352,7 +351,6 @@ paths:
                 description: "Example data event"
                 value:
                   {
-                    user_id: 1,
                     event_id: 2,
                     comment: "comment"
                   }
@@ -474,33 +472,6 @@ components:
           schema:
             type: object
             properties:
-              data:
-                type: object
-                properties:
-                  ID:
-                    type: integer
-                    example: 1
-                  CreatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  UpdatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  username:
-                    type: string
-                    example: sepatu
-                  email:
-                    type: string
-                    example: sepatu@mail.com
-                  address:
-                    type: string
-                    example: Surabaya
-                  phone:
-                    type: string
-                    example: "082333444555"
-                  avatar:
-                    type: string
-                    example: ava
               status:
                 type: string
                 example: success
@@ -580,33 +551,6 @@ components:
           schema:
             type: object
             properties:
-              data:
-                type: object
-                properties:
-                  ID:
-                    type: integer
-                    example: 1
-                  CreatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  UpdatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  username:
-                    type: string
-                    example: bujang
-                  email:
-                    type: string
-                    example: bujang@mail.com
-                  address:
-                    type: string
-                    example: ini alamat baru
-                  phone:
-                    type: string
-                    example: "082333444777"
-                  avatar:
-                    type: string
-                    example: avatar
               status:
                 type: string
                 example: success
@@ -636,36 +580,6 @@ components:
           schema:
             type: object
             properties:
-              data:
-                type: object
-                properties:
-                  ID:
-                    type: integer
-                    example: 1
-                  CreatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  UpdatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  name:
-                    type: string
-                    example: name
-                  date:
-                    type: string
-                    example: 2022-04-07T21:08:54.73+07:00
-                  location:
-                    type: string
-                    example: location
-                  status:
-                    type: string
-                    example: "images"
-                  category:
-                    type: string
-                    example: category
-                  image:
-                    type: string
-                    example: image
               status:
                 type: string
                 example: success
@@ -692,36 +606,6 @@ components:
           schema:
             type: object
             properties:
-              data:
-                type: object
-                properties:
-                  ID:
-                    type: integer
-                    example: 1
-                  CreatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  UpdatedAt:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  name:
-                    type: string
-                    example: event name
-                  date:
-                    type: string
-                    example: "2022-04-07T21:08:54.73+07:00"
-                  location:
-                    type: string
-                    example: jakarta
-                  image:
-                    type: string
-                    example: images
-                  status:
-                    type: string
-                    example: available
-                  category:
-                    type: string
-                    example: hello
               status:
                 type: string
                 example: success
@@ -878,9 +762,9 @@ components:
           schema:
             type: object
             properties:
-              code:
-                type: integer
-                example: 200
+              status:
+                type: string
+                example: success
               message:
                 type: string
                 example: success create partcipant
@@ -904,9 +788,9 @@ components:
           schema:
             type: object
             properties:
-              code:
-                type: integer
-                example: 200
+              status:
+                type: string
+                example: success
               message:
                 type: string
                 example: success create comment
