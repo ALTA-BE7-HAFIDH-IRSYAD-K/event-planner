@@ -25,14 +25,3 @@ func (pr *ParticipationRepository) CreateParticipantion(participant entity.JoinE
 	}
 	return nil
 }
-
-func (pr *ParticipationRepository) GetAllParticipantions() ([]entity.JoinEvent, error) {
-	var participant []entity.JoinEvent
-
-	tx := pr.database.Find(&participant)
-
-	if tx.Error != nil {
-		return nil, tx.Error
-	}
-	return participant, nil
-}

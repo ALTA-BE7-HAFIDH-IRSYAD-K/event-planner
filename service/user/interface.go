@@ -5,8 +5,8 @@ import (
 )
 
 type UserUseCaseInterface interface {
-	GetAll() ([]entity.User, error)
-	GetUserById(id int) (entity.User, error)
+	GetAll() ([]entity.UserResponse, error)
+	GetUserById(id int) (entity.UserResponse, error)
 	CreateUser(user entity.User) error
 	DeleteUser(id int) error
 	UpdateUser(id int, user entity.User) error

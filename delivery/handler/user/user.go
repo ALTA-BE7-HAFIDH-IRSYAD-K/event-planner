@@ -89,6 +89,6 @@ func (uh *UserHandler) UpdateUser() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
 		}
-		return c.JSON(http.StatusOK, response.ResponseSuccess("success update user by id", users))
+		return c.JSON(http.StatusOK, response.ResponseSuccessWithoutData("success update user by id"))
 	}
 }

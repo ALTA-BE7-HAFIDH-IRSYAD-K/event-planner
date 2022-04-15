@@ -1,8 +1,11 @@
 package user
 
 import (
+	password2 "event-planner/delivery/password"
 	"event-planner/entity"
 	"event-planner/repository/user"
+
+	"github.com/jinzhu/copier"
 )
 
 type UserUseCase struct {
@@ -13,20 +16,25 @@ func NewUserUseCase(userRepo user.UserRepositoryInterface) UserUseCaseInterface 
 	return &UserUseCase{
 		UserRepository: userRepo,
 	}
-
 }
 
-func (uuc *UserUseCase) GetAll() ([]entity.User, error) {
+func (uuc *UserUseCase) GetAll() ([]entity.UserResponse, error) {
 	users, err := uuc.UserRepository.GetAll()
-	return users, err
+	var userRes []entity.UserResponse
+	copier.Copy(&userRes, &users)
+	return userRes, err
 }
 
-func (uuc *UserUseCase) GetUserById(id int) (entity.User, error) {
+func (uuc *UserUseCase) GetUserById(id int) (entity.UserResponse, error) {
 	user, err := uuc.UserRepository.GetUserById(id)
-	return user, err
+	userRes := entity.UserResponse{}
+	copier.Copy(&userRes, &user)
+	return userRes, err
 }
 
 func (uuc *UserUseCase) CreateUser(user entity.User) error {
+	password, _ := password2.HashPassword(user.Password)
+	user.Password = password
 	err := uuc.UserRepository.CreateUser(user)
 	return err
 }
@@ -37,6 +45,8 @@ func (uuc *UserUseCase) DeleteUser(id int) error {
 }
 
 func (uuc *UserUseCase) UpdateUser(id int, user entity.User) error {
+	password, _ := password2.HashPassword(user.Password)
+	user.Password = password
 	err := uuc.UserRepository.UpdateUser(id, user)
 	return err
 }

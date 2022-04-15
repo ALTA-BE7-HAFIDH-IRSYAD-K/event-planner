@@ -4,6 +4,7 @@ import (
 	"event-planner/entity"
 	"event-planner/repository/event"
 	"event-planner/utils"
+	"github.com/jinzhu/copier"
 	"mime/multipart"
 )
 
@@ -18,14 +19,18 @@ func NewEventUseCase(eventRepo event.EventRepositoryInterface) EventUseCaseInter
 
 }
 
-func (euc *EventUseCase) GetAll() ([]entity.Event, error) {
-	Products, err := euc.EventRepository.GetAll()
-	return Products, err
+func (euc *EventUseCase) GetAll() ([]entity.EventResponseGetAll, error) {
+	events, err := euc.EventRepository.GetAll()
+	var eventsResp []entity.EventResponseGetAll
+	copier.Copy(&eventsResp, &events)
+	return eventsResp, err
 }
 
-func (euc *EventUseCase) GetEventById(id int) (entity.Event, error) {
+func (euc *EventUseCase) GetEventById(id int) (entity.EventResponse, error) {
 	Product, err := euc.EventRepository.GetEventById(id)
-	return Product, err
+	var eventsResp entity.EventResponse
+	copier.Copy(&eventsResp, &Product)
+	return eventsResp, err
 }
 
 func (euc *EventUseCase) GetEventByIdUser(id int) ([]entity.Event, error) {
