@@ -24,11 +24,11 @@ func NewEventHandler(eventUseCase event.EventUseCaseInterface) *EventHandler {
 
 func (eh *EventHandler) GetAllHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		products, err := eh.eventUseCase.GetAll()
+		events, err := eh.eventUseCase.GetAll()
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to get all event"))
 		}
-		return c.JSON(http.StatusOK, response.ResponseSuccess("success get all event", products))
+		return c.JSON(http.StatusOK, response.ResponseSuccess("success get all event", events))
 	}
 }
 
@@ -36,11 +36,11 @@ func (eh *EventHandler) GetEventById() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var id, _ = strconv.Atoi(c.Param("id"))
 
-		products, err := eh.eventUseCase.GetEventById(id)
+		event, err := eh.eventUseCase.GetEventById(id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("Event not found"))
 		}
-		return c.JSON(http.StatusOK, response.ResponseSuccess("success get event by id", products))
+		return c.JSON(http.StatusOK, response.ResponseSuccess("success get event by id", event))
 	}
 }
 

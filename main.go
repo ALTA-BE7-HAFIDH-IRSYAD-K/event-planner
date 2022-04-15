@@ -2,11 +2,14 @@ package main
 
 import (
 	_configs "event-planner/configs"
+	_commentHandler "event-planner/delivery/handler/comment"
 	_participantHandler "event-planner/delivery/handler/participant"
 	_middleware "event-planner/delivery/middleware"
 	"event-planner/delivery/router"
 	"event-planner/driver"
+	_commentRepo "event-planner/repository/comment"
 	_participantRepo "event-planner/repository/participant"
+	_commentService "event-planner/service/comment"
 	_participantService "event-planner/service/participant"
 	"fmt"
 	"github.com/labstack/echo/v4"
@@ -47,6 +50,10 @@ func main() {
 	participantService := _participantService.NewParticipatService(participantRepo)
 	participantHandler := _participantHandler.NewParticipantHandler(participantService)
 
+	commentRepo := _commentRepo.NewCommentRepository(db)
+	commentService := _commentService.NewCommentService(commentRepo)
+	commentHandler := _commentHandler.NewCommentHandler(commentService)
+
 	e := echo.New()
 
 	e.Use(_echoMiddleware.RemoveTrailingSlash())
@@ -57,6 +64,6 @@ func main() {
 	}))
 
 	router.RegisterAuthPath(e, authHandler)
-	router.RegisterPath(e, userHandler, eventHandler, participantHandler)
+	router.RegisterPath(e, userHandler, eventHandler, participantHandler, commentHandler)
 	log.Fatal(e.Start(fmt.Sprintf(":%v", configs.Port)))
 }

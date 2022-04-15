@@ -6,8 +6,9 @@ import (
 	"event-planner/entity"
 	"event-planner/service/participant"
 	"fmt"
-	"github.com/labstack/echo/v4"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 type ParticipantHandler struct {
@@ -17,16 +18,6 @@ type ParticipantHandler struct {
 func NewParticipantHandler(participantService participant.ServiceInterface) *ParticipantHandler {
 	return &ParticipantHandler{
 		participantService: participantService,
-	}
-}
-
-func (ph *ParticipantHandler) GetAllParticipantHandler() echo.HandlerFunc {
-	return func(c echo.Context) error {
-		participants, err := ph.participantService.GetAllParticipantions()
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to get all data participant"))
-		}
-		return c.JSON(http.StatusOK, response.ResponseSuccess("success to get all participant", participants))
 	}
 }
 

@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"event-planner/delivery/middleware"
+	password2 "event-planner/delivery/password"
 	"event-planner/entity"
 	"fmt"
 	"gorm.io/gorm"
@@ -33,8 +34,9 @@ func (ar *AuthRepository) Login(email string, password string) (string, error) {
 	fmt.Println("data user", user.Password)
 	fmt.Println("data rows", tx.RowsAffected)
 
-	//jika ada, maka cek passwordnya
-	if user.Password != password {
+	//jika ada, maka cek
+
+	if password2.CheckPasswordHash(password, user.Password) != true {
 		return "password incorrect", errors.New("password incorrect")
 	}
 
