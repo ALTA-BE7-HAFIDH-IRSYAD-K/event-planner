@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
-	"github.com/joho/godotenv"
 	"github.com/labstack/gommon/log"
 	"mime/multipart"
 	"net/http"
@@ -18,16 +17,11 @@ import (
 
 func UploadFile(fileParam *multipart.FileHeader, uploadFileDir string) (string, error) {
 	var url string
-	err := godotenv.Load()
 
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	awsRegion := os.Getenv("AWS_S3_REGION")
-	awsBucket := os.Getenv("AWS_S3_BUCKET")
-	awsKey := os.Getenv("AWS_S3_KEY")
-	awsAccess := os.Getenv("AWS_S3_ACCESS")
+	awsRegion, _ := os.LookupEnv("AWS_S3_REGION")
+	awsBucket, _ := os.LookupEnv("AWS_S3_BUCKET")
+	awsKey, _ := os.LookupEnv("AWS_S3_KEY")
+	awsAccess, _ := os.LookupEnv("AWS_S3_ACCESS")
 
 	session, err := session.NewSession(&aws.Config{
 		Region:      aws.String(awsRegion),
