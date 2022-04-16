@@ -35,22 +35,17 @@ func GetConfig() *AppConfig {
 }
 
 func initConfig() *AppConfig {
-
 	var defaultConfig AppConfig
-	defaultConfig.Port = "8000"
-	defaultConfig.Database.Driver = getEnv("DRIVER", "mysql")
-	defaultConfig.Database.Name = getEnv("DB_NAME", "event")
-	defaultConfig.Database.Address = getEnv("ADDRESS", "localhost")
-	defaultConfig.Database.Port = "3306"
-	defaultConfig.Database.Username = getEnv("DB_USERNAME", "root")
-	defaultConfig.Database.Password = getEnv("DB_PASSWORD", "admin123")
-	defaultConfig.AWSRegion = getEnv("AWS_S3_REGION", "Error")
-	defaultConfig.AWSRegion = getEnv("AWS_S3_BUCKET", "Error")
+	defaultConfig.Port = os.Getenv("APP_PORT")
+	defaultConfig.SecretJWT = os.Getenv("JWT_SECRET")
+	defaultConfig.Database.Driver = os.Getenv("DB_DRIVER")
+	defaultConfig.Database.Name = os.Getenv("DB_NAME")
+	defaultConfig.Database.Address = os.Getenv("DB_ADDRESS")
+	defaultConfig.Database.Port = os.Getenv("DB_PORT")
+	defaultConfig.Database.Username = os.Getenv("DB_USERNAME")
+	defaultConfig.Database.Password = os.Getenv("DB_PASSWORD")
+	defaultConfig.AWSBucket = os.Getenv("AWS_S3_BUCKET")
+	defaultConfig.AWSRegion = os.Getenv("AWS_S3_REGION")
+
 	return &defaultConfig
-}
-func getEnv(key, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
 }
