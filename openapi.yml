@@ -339,14 +339,6 @@ paths:
           $ref: "#/components/responses/createParticipantSuccess"
         "400":
           $ref: "#/components/responses/createParticipantFailed"
-    get:
-      tags:
-        - Participants
-      responses:
-        "200":
-          $ref: "#/components/responses/getAllParticipantSuccess"
-        "400":
-          $ref: "#/components/responses/getAllParticipantFailed"
   /events/comment:
     post:
       tags: 
@@ -372,14 +364,6 @@ paths:
           $ref: "#/components/responses/createParticipantCommentSuccess"
         "400":
           $ref: "#/components/responses/createParticipantCommentFailed"
-    get:
-      tags:
-        - Participants
-      responses:
-        "200":
-          $ref: "#/components/responses/getAllParticipantCommentSuccess"
-        "400":
-          $ref: "#/components/responses/getAllParticipantCommentFailed"
 #==================================#
 #    COMPONENT
 #==================================#
