@@ -18,6 +18,7 @@ type User struct {
 }
 
 type UserResponse struct {
+	gorm.Model
 	Name        string `json:"name" form:"name"`
 	Email       string `json:"email" form:"email"`
 	PhoneNumber string `json:"phoneNumber" form:"phoneNumber"`

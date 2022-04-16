@@ -1,8 +1,9 @@
 package entity
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Event struct {
@@ -20,6 +21,7 @@ type Event struct {
 }
 
 type EventResponseGetAll struct {
+	gorm.Model
 	UserID      int
 	Name        string    `json:"name" form:"name"`
 	Location    string    `json:"location" form:"location"`
@@ -31,6 +33,7 @@ type EventResponseGetAll struct {
 }
 
 type EventResponse struct {
+	gorm.Model
 	UserID      int
 	Name        string              `json:"name" form:"name"`
 	Location    string              `json:"location" form:"location"`
