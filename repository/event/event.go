@@ -18,7 +18,7 @@ func NewEventRepository(db *gorm.DB) *EventRepository {
 
 func (er *EventRepository) GetAll() ([]entity.Event, error) {
 	var events []entity.Event
-	tx := er.database.Find(&events)
+	tx := er.database.Preload("User").Find(&events)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
