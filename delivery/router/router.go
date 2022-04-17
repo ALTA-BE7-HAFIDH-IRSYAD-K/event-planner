@@ -32,6 +32,6 @@ func RegisterPath(e *echo.Echo, uh *user.UserHandler, eh *event.EventHandler, ph
 
 	e.POST("/events/participation", ph.CreateParticipantHandler(), middleware.JWTMiddleware())
 
-	e.POST("/events/comment", ch.CreateParticipantHandler(), middleware.JWTMiddleware())
+	e.POST("/events/comment", ch.CreateParticipantCommentHandler(), middleware.JWTMiddleware())
 
 }

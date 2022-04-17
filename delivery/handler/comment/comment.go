@@ -6,8 +6,9 @@ import (
 	"event-planner/entity"
 	"event-planner/service/comment"
 	"fmt"
-	"github.com/labstack/echo/v4"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
 )
 
 type HandlerComment struct {
@@ -20,7 +21,7 @@ func NewCommentHandler(commentService comment.ServiceCommentInterface) *HandlerC
 	}
 }
 
-func (ch *HandlerComment) CreateParticipantHandler() echo.HandlerFunc {
+func (ch *HandlerComment) CreateParticipantCommentHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		var dataComment entity.Comment
 

@@ -3,6 +3,7 @@ package event
 import (
 	"event-planner/entity"
 	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -29,7 +30,6 @@ func (er *EventRepository) GetAll() ([]entity.Event, error) {
 func (er *EventRepository) GetEventById(id int) (entity.Event, error) {
 	var events entity.Event
 	tx := er.database.Preload("JoinEvent").Preload("JoinEvent.User").Preload("Comment").Preload("Comment.User").Where("id = ? ", id).First(&events)
-	//tx := er.database.Where("id = ?", id).First(&events)
 	if tx.Error != nil {
 		return events, tx.Error
 	}
