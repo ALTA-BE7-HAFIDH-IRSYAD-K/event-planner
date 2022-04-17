@@ -23,7 +23,7 @@ func (uh *UserHandler) GetAllHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		users, err := uh.userUseCase.GetAll()
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to get all users"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccess("success get all users", users))
 	}
@@ -36,7 +36,7 @@ func (uh *UserHandler) GetUserById() echo.HandlerFunc {
 
 		users, err := uh.userUseCase.GetUserById(id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to  get user by id"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccess("success get user by id", users))
 	}
@@ -49,7 +49,7 @@ func (uh *UserHandler) GetUserByIdUser() echo.HandlerFunc {
 
 		users, err := uh.userUseCase.GetUserById(id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to get user by id"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccess("success get user by id", users))
 	}
@@ -73,9 +73,9 @@ func (uh *UserHandler) DeleteUser() echo.HandlerFunc {
 
 		err := uh.userUseCase.DeleteUser(id)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to Delete user"))
 		}
-		return c.JSON(http.StatusOK, response.ResponseSuccessWithoutData("success delete user by id"))
+		return c.JSON(http.StatusOK, response.ResponseSuccessWithoutData("success delete user"))
 	}
 }
 
@@ -87,7 +87,7 @@ func (uh *UserHandler) UpdateUser() echo.HandlerFunc {
 
 		err := uh.userUseCase.UpdateUser(id, users)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to update user"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccessWithoutData("success update user by id"))
 	}

@@ -103,7 +103,7 @@ func (eh *EventHandler) DeleteEvent() echo.HandlerFunc {
 
 		err := eh.eventUseCase.DeleteEvent(id, userID)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to delete product"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccessWithoutData("success delete product by id"))
 	}
@@ -117,7 +117,7 @@ func (eh *EventHandler) UpdateEvent() echo.HandlerFunc {
 
 		err := eh.eventUseCase.UpdateEvent(id, event)
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to fetch data"))
+			return c.JSON(http.StatusInternalServerError, response.ResponseFailed("failed to update event"))
 		}
 		return c.JSON(http.StatusOK, response.ResponseSuccess("success update product by id", event))
 	}
