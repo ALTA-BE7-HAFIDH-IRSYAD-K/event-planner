@@ -20,19 +20,25 @@ func NewEventRepository(db *gorm.DB) *EventRepository {
 func (er *EventRepository) GetAll() ([]entity.Event, error) {
 	var events []entity.Event
 	tx := er.database.Preload("User").Find(&events)
+
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
+
 	return events, nil
 
 }
 
 func (er *EventRepository) GetEventById(id int) (entity.Event, error) {
 	var events entity.Event
-	tx := er.database.Preload("JoinEvent").Preload("JoinEvent.User").Preload("Comment").Preload("Comment.User").Where("id = ? ", id).First(&events)
+	tx := er.database.Preload("JoinEvent").Preload("JoinEvent.User").Preload("Comment", func(db *gorm.DB) *gorm.DB {
+		return db.Order("comments.ID DESC")
+	}).Preload("Comment.User").Where("id = ? ", id).First(&events)
+
 	if tx.Error != nil {
 		return events, tx.Error
 	}
+
 	return events, nil
 
 }
