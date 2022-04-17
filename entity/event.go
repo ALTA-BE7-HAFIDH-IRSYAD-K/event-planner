@@ -18,7 +18,7 @@ type Event struct {
 	Date        time.Time `json:"date" form:"date"`
 	JoinEvent   []JoinEvent
 	Comment     []Comment
-	User        User
+	User        User `json:"user" gorm:"foreignKey:UserID;references:ID"`
 }
 
 type EventResponseGetAll struct {
