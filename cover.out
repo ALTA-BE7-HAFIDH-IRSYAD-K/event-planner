@@ -1,0 +1,5 @@
+mode: set
+event-planner/service/participant/participant.go:12.105,17.2 1 1
+event-planner/service/participant/participant.go:19.88,24.2 2 1
+event-planner/service/comment/comment.go:12.97,16.2 1 1
+event-planner/service/comment/comment.go:18.69,22.2 2 1
