@@ -16,6 +16,8 @@ type AppConfig struct {
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
 	}
+	AWSRegion string `yaml:"AWSRegion"`
+	AWSBucket string `yaml:"AWSBucket"`
 }
 
 var lock = &sync.Mutex{}
@@ -42,6 +44,8 @@ func initConfig() *AppConfig {
 	defaultConfig.Database.Port = os.Getenv("DB_PORT")
 	defaultConfig.Database.Username = os.Getenv("DB_USERNAME")
 	defaultConfig.Database.Password = os.Getenv("DB_PASSWORD")
+	defaultConfig.AWSBucket = os.Getenv("AWS_S3_BUCKET")
+	defaultConfig.AWSRegion = os.Getenv("AWS_S3_REGION")
 
 	return &defaultConfig
 }
