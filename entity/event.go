@@ -16,6 +16,7 @@ type Event struct {
 	Description string    `json:"description" form:"description"`
 	Category    string    `json:"category" form:"category"`
 	Date        time.Time `json:"date" form:"date"`
+	User        User      `json:"user" gorm:"foreignKey:UserID;references:ID"`
 	JoinEvent   []JoinEvent
 	Comment     []Comment
 }
